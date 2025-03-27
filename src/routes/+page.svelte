@@ -5,7 +5,36 @@
 <script>
   import projects from "$lib/projects.json";
   import Project from "$lib/Project.svelte";
+
+  let profileData = fetch("https://api.github.com/users/marimarifr");
 </script>
+
+{#await fetch("https://api.github.com/users/marimarifr")}
+  <p>Loading...</p>
+{:then response}
+  {#await response.json()}
+    <p>Decoding...</p>
+  {:then data} 
+    <section>
+      <h2>My Github Stats</h2>
+      <dl>
+        <dt>Followers</dt>
+        <dd>{data.followers}</dd>
+        <dt>Following</dt>
+        <dd>{data.following}</dd>
+        <dt>Public Repos</dt>
+        <dd>{data.public_repos}</dd>
+        <dt>Desde</dt>
+        <dd>{data.created_at}</dd>
+      </dl>
+    </section>
+  {:catch error}
+    <p class="error">Something went wrong: {error.message}</p>
+  {/await}
+  {:catch error}
+    <p class="error">Something went wrong: {error.message}</p>
+{/await}
+
 
 <h1>Mariana</h1>
 

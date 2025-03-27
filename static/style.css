@@ -3,6 +3,7 @@
 	--white: #d01f1f;
 	--color-accent: #ff00ff;
 	--color-accent-light: oklch(65% 50% 0 / 20%);
+	--border-gray: oklch(80% 3% 200);
 
   }
 
@@ -47,6 +48,14 @@ a:hover{
 	padding: -0.1em;
 }
 
+.color-scheme{
+	position:absolute;
+	top: 1rem;
+	right: 1rem;
+	display: inline-flex;
+	gap: 5px;
+}
+
 /* input,textarea,button {
     font: inherit;
 }
@@ -74,3 +83,26 @@ form label {
 label, button{
 	grid-column: 1 / -1 ;
 } 
+
+dl{
+    display: grid;
+    grid-template-columns: auto;
+  }
+  dt{
+    grid-row: 1;
+    font-family: inherit;
+    font-weight: bold;
+    color: var(--border-gray);
+    text-transform: uppercase;
+  }
+  dd{
+    font-family: inherit;
+    font-weight: bold;
+  }
+  section{
+    border-width:0.15em;
+  	/* border-style:solid; */
+	  border-color:var(--border-gray);
+    padding-left: 1em;
+    padding-right: 1em;
+  }
