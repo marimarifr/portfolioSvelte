@@ -9,6 +9,9 @@
     <img src={data.image} alt="" />
     <p>
         {data.description}
+        <br> <!-- é pra dar uma linha -->
+        {data.year}
+
     </p>
 </article>
 
