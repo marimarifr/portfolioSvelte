@@ -1,20 +1,26 @@
+
 <svelte:head>
-  <title>Não ligue</title>
+  <title>Contact me</title>
 </svelte:head>
+<form action="mailto:foo@example.com" method="GET">
+    <label for="email">Email: <input id="email" type="email" name="text_email"> </label>
+    <label for="subject">Subject: <input id="subject" type="text" name="text_subject"> </label>
+    <label for="body">Body: <textarea id="body" name="text_message"></textarea> </label>
 
-<h1> Contatos</h1>
-<p>Entre em contato comigo por email</p>
-
-<!-- Navigation menu: -->
-
-<h1> Preencha</h1>
-<form action="mailto:mariana.rocha@fgv.edu.br" method = "get"> 
-    <!-- <label for="email">Email:</label><br> -->
-    <label for="email">Email:</label><br>
-    <input name = "email" type = "email"><br>
-    <label for="subject">Assunto:</label><br>
-    <input name = "subject"><br>
-    <label for="body">Texto:</label><br>
-    <textarea name = "body"></textarea>
-    <button>Submit</button>
+    <input type="submit" value="Submit" id="button">
+    <!-- <button>Submit</button> -->
 </form>
+<style>
+  form {
+    display: grid; /*step 3.3 part 1*/
+    grid-template-columns: auto 1fr; /*step 3.3 part 1.1*/
+    gap: 1em; /*step 3.3 part 3*/
+  }
+  form label {
+    display: grid;/*step 3.3 part 2*/
+    grid-template-columns: subgrid;/*step 3.3 part 2*/
+  }
+  #button, label{
+    grid-column: 1 / -1; /*step 3.3 part 2*/
+  }
+</style>

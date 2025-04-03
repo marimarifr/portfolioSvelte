@@ -1,29 +1,44 @@
+
 <svelte:head>
-  <title>Competências</title>
+  <title>CV</title>
 </svelte:head>
-
-<h1><b>Mariana Rocha</b></h1>
+<h1>Resume</h1>
+<hr />
+<div class="resume">
 <section>
-    <h1>Resumo Profissional</h1>
-    <p>
-        Profissional altamente motivado com vasta experiência em inovação tecnológica, gestão de projetos e desenvolvimento de soluções criativas para empresas globais. Apaixonado por desafios e sempre em busca de aprimoramento profissional.
-
-    </p>
-</section>
-
+    <header>Interests</header>
+    <ul>
+        <li>Scaring (Formerly) </li>
+        <li>Comedy</li>
+        <li>His Relationship with Celia Mae </li>
+        <li>The Theater</li>
+    </ul>
+    </section>
 <section>
-
-    <h1>Formação</h1>
-    <p>Universidade dos Sonhos - Graduação em Engenharia da Imaginação (2015 - 2019)</p>
-    <p>Escola do Futuro - Ensino Médio (2012 - 2014)</p>
-</section> 
-    <h1>Experiências</h1>
-    <p><i>Google </i>(2004 - presente)</p>
-    <p>Mercados <sub>Patureba</sub> (2000-2004)</p>
-    <!-- <section> -->
-        <h1>Skills</h1>
+    <header>Education</header>
+    <ul>
+        <li>Monsters University, Scaring Program</li>
+        <li>Codeacademy</li>
+    </ul>
+    </section>
+<section>
+    <header>Experience</header>
+    <ul>
+        <li>Monsters, Inc</li>
         <ul>
-            <li>Coffee</li>
-            <li>Tea</li>
-            <li>Milk</li>
-          </ul>
+            <li>Worker in mailroom</li>
+            <li>Scarer assistant</li>
+            <li>Co-CEO of Monsters, Inc.</li>
+            <li>Jokester</li>
+        </ul>
+    </ul>
+    </section>
+<section>
+    <header>Extracurriculars</header>
+    <ul>
+        <li>Won the Scare Games with <a href="https://disney.fandom.com/wiki/Oozma_Kappa">Oozma Kappa</a></li>
+        <li>Helped transition Monsters, Inc. into a laugh-based energy company.</li>
+        <li>Became a top comedian and mentor for future monsters</li>
+    </ul>
+</section>
+</div>
