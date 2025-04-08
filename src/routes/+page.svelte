@@ -2,6 +2,23 @@
   import projects from "$lib/projects.json";
   import Project from "$lib/Project.svelte";
 
+  import { onMount } from "svelte";
+
+let githubData = null;
+let loading = true;
+let error = null;
+
+onMount(async () => {
+    try {
+        const response = await fetch("https://api.github.com/users/marimarifr");
+        githubData = await response.json();
+    } catch (err) {
+        error = err;
+    }
+    loading = false;
+});
+
+
   // let profileData = fetch("https://api.github.com/users/juan1t0");
 </script>
 
@@ -17,7 +34,26 @@
     Mike's world gets turned upside down when a human girl (nicknamed "Boo") enters the monster world.
     Teaming up with Sulley to return Boo to her world, Mike uncovers a company conspiracy and helps solve an energy crisis that plagues the entire city of Monstropolis
 </p>
-{#await fetch("https://api.github.com/users/juan1t0")}
+
+{#if loading}
+    <p>Loading...</p>
+{:else if error}
+    <p class="error">Something went wrong: {error.message}</p>
+{:else}
+    <section>
+        <h2>My GitHub Stats</h2>
+        <dl>
+            <dt>Followers</dt>
+            <dd>{githubData.followers}</dd>
+            <dt>Following</dt>
+            <dd>{githubData.following}</dd>
+            <dt>Public Repositories</dt>
+            <dd>{githubData.public_repos}</dd>
+        </dl>
+    </section>
+{/if}
+
+<!-- {#await fetch("https://api.github.com/users/juan1t0")}
   <span>Loading...</span>
 {:then response}
   {#await response.json()}
@@ -39,7 +75,7 @@
   {/await}
   {:catch error}
     <span class="error">Something went wrong: {error.message}</span>
-{/await}
+{/await} -->
 
 <h2>
   Latest Projects
