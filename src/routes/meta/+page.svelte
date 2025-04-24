@@ -5,6 +5,7 @@
 <script>
 import * as d3 from "d3";
 import { onMount } from "svelte";
+import Bar from '$lib/Bar.svelte';
 
 let data = [];
 let commits = [];
@@ -15,6 +16,8 @@ let cursor = {x: 0, y: 0};
 
 let hoveredIndex = -1;
 $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
+
+let clickedCommits = [];
 
 let margin = {top: 10, right: 10, bottom: 30, left: 20};
 let usableArea = {
@@ -47,6 +50,7 @@ commits = d3.groups(data, d => d.commit).map(([commit, lines]) => {
         hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
         totalLines: lines.length
     };
+commits = d3.sort(commits, d => -d.totalLines);
 
     // Like ret.lines = lines
     // but non-enumerable so it doesn’t show up in JSON.stringify
@@ -63,6 +67,16 @@ console.log(commits)
 
 });
 
+$: allTypes = Array.from(new Set(data.map(d => d.type)));
+$: selectedLines = (clickedCommits.length > 0 ? clickedCommits : commits).flatMap(d => d.lines);
+$: selectedCounts = d3.rollup(
+    selectedLines,
+    v => v.length,
+    d => d.type
+);
+$: languageBreakdown = allTypes.map(type => [type, selectedCounts.get(type) || 0]);
+
+
 $: minDate = d3.min(commits.map(d => d.date));
 $: maxDate = d3.max(commits.map(d => d.date));
 $: maxDatePlusOne = new Date(maxDate);
@@ -77,6 +91,10 @@ $: yScale = d3.scaleLinear()
               .domain([24, 0])
               .range([usableArea.bottom, usableArea.top]);
 
+$: rScale = d3.scaleSqrt()
+.domain(d3.extent(commits.map(d=>d.totalLines)))
+.range([2, 30]);
+
 $: {
     d3.select(xAxis).call(d3.axisBottom(xScale));
     d3.select(yAxis).call(d3.axisLeft(yScale).tickFormat(d => String(d % 24).padStart(2, "0") + ":00"));
@@ -89,6 +107,34 @@ $: {
           .tickSize(-usableArea.width)
     );
 }
+
+function dotInteraction (index, evt) {
+    if (evt.type === "mouseenter") 
+    {
+        hoveredIndex = index;
+        cursor = {x: evt.x, y: evt.y};
+    }
+    else if (evt.type === "mouseleave") 
+    {
+        hoveredIndex = -1
+    }
+    else if (evt.type === "click") 
+    {
+        let commit = commits[index]
+        if (!clickedCommits.includes(commit)) 
+        {
+            // Add the commit to the clickedCommits array
+            clickedCommits = [...clickedCommits, commit];
+        }
+        else 
+        {
+            // Remove the commit from the array
+            clickedCommits = clickedCommits.filter(c => c !== commit);
+        }
+    }
+
+}
+
 
 </script>
 
@@ -122,20 +168,23 @@ Estatísticas do meu github
   <g class="dots">
     {#each commits as commit, index }
         <circle
-              on:mouseenter={evt => {
-                hoveredIndex = index;
-                cursor = {x: evt.x, y: evt.y};
-            }}
-            on:mouseleave={evt => hoveredIndex = -1}
+            class:selected={ clickedCommits.includes(commit) }
+            on:mouseenter={evt => dotInteraction(index, evt)}
+            on:mouseleave={evt => dotInteraction(index, evt)}
+            on:click={ evt => dotInteraction(index, evt) }
             cx={ xScale(commit.datetime) }
             cy={ yScale(commit.hourFrac) }
-            r="5"
+            r={ rScale(commit.totalLines) }
             fill="steelblue"
+            fill-opacity="0.5"
         />
     {/each}
     </g>
     
 </svg>
+
+<Bar data={languageBreakdown} width={width} />
+
 
 <section>
   <h2>Summary</h2>
@@ -226,6 +275,10 @@ circle {
     &:hover {
         transform: scale(5);
     }
+}
+
+.selected {
+    fill: var(--color-accent);
 }
 
   </style>

@@ -1,6 +1,7 @@
 <script>
   import projects from "$lib/projects.json";
   import Project from "$lib/Project.svelte";
+  import Bar from '$lib/Bar.svelte';
 
   import { onMount } from "svelte";
 
